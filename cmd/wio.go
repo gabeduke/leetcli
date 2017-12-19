@@ -6,9 +6,12 @@ import (
 	"net/http"
 
 	"leetcli/lib"
+	"leetcli/lib/wio/sensors"
 
 	"github.com/spf13/cobra"
 )
+
+var wio string
 
 var wioCmd = &cobra.Command{
 	Use:   "wio [Wio Name]",
@@ -18,11 +21,13 @@ data attached to the node`,
 	Run: func(cmd *cobra.Command, args []string) {
 		conf := lib.InitConfig()
 
-		wio := args[0]
+		sensor, _ := conf.String(wio +".sensor")
+		params := sensors.SensorMap(sensor)
+
 		baseurl, _ := conf.String("baseurl")
 		token, _ := conf.String(wio + ".token")
 		node, _ := conf.String( wio + ".sensor")
-		url := (baseurl + node +"/" + "lux" + "?access_token=" + token)
+		url := (baseurl + node + params + "?access_token=" + token)
 
 		fmt.Printf(callWio(url))
 	},
@@ -46,14 +51,5 @@ func callWio(s string) string {
 
 func init() {
 	RootCmd.AddCommand(wioCmd)
-
-	// Here you will define your flags and configuration settings.
-
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// listCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// listCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	wioCmd.PersistentFlags().StringVarP(&wio, "name", "n", "myWio", "name of wio board")
 }

@@ -1,7 +1,7 @@
 package main
 
 import (
-	"leetcli/cmd"
+	"github.com/gabeduke/leetcli/cmd"
 )
 
 func main() {

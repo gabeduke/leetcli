@@ -1,0 +1,15 @@
+name: leetcli
+version: master
+summary:  cli for all the things
+description: long description
+confinement: devmode
+
+apps:
+  leetcli:
+    command: leetcli
+
+parts:
+  leetcli:
+    source: .
+    plugin: go
+    go-importpath: github.com/gabeduke/leetcli

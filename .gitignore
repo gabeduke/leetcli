@@ -1,3 +1,7 @@
 .vscode
 config.yml
 debug
+stage
+prime
+parts
+*.snap

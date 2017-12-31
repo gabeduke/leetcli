@@ -5,6 +5,6 @@ import (
 )
 
 func InitConfig() *config.Config {
-	yamlFile := config.NewYAMLFile("/home/gabeduke/.go/src/leetcli/config.yml")
+	yamlFile := config.NewYAMLFile("~/.leetcli.yml")
     return config.NewConfig([]config.Provider{yamlFile})
 }

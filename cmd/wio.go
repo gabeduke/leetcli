@@ -1,13 +1,14 @@
 package cmd
 
 import (
+	"os/user"
+	"log"
 	"fmt"
 	"io/ioutil"
 	"net/http"
 
-	"leetcli/lib"
-	"leetcli/lib/wio/sensors"
-
+	"github.com/gabeduke/leetcli-wiolib"
+	"github.com/zpatrick/go-config"
 	"github.com/spf13/cobra"
 )
 
@@ -20,7 +21,8 @@ var wioCmd = &cobra.Command{
 data attached to the node`,
 	Run: func(cmd *cobra.Command, args []string) {
 		// initialize config
-		conf := lib.InitConfig()
+		conf := InitConfig()
+
 
 		// get sensor param for building url
 		sensor, _ := conf.String(wio +".sensor")
@@ -52,6 +54,16 @@ func callWio(s string) string {
 		}
 
 		return string(bodyBytes)
+}
+
+func InitConfig() *config.Config {
+	usr, err := user.Current()
+    if err != nil {
+        log.Fatal( err )
+	}
+
+	yamlFile := config.NewYAMLFile( usr.HomeDir + "/.leetcli.yaml")
+    return config.NewConfig([]config.Provider{yamlFile})
 }
 
 func init() {

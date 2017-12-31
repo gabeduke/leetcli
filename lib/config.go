@@ -1,10 +1,18 @@
 package lib
 
 import (
+	"os/user"
+	"log"
+
 	"github.com/zpatrick/go-config"
 )
 
 func InitConfig() *config.Config {
-	yamlFile := config.NewYAMLFile("/home/gabeduke/.go/src/leetcli/config.yml")
+	usr, err := user.Current()
+    if err != nil {
+        log.Fatal( err )
+	}
+
+	yamlFile := config.NewYAMLFile( usr.HomeDir + "/.leetcli.yaml")
     return config.NewConfig([]config.Provider{yamlFile})
 }
